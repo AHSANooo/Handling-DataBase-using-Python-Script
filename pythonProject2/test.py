@@ -13,23 +13,29 @@ cursor = conn.cursor()
 
 # Defining the SQL query to calculate the total profit
 query = """
-SELECT SUM((od.price - p.cost) * od.quantity) AS profit
-FROM order_details od
-JOIN products p ON od.product_id = p.product_id;
+-- to find total products sold
+SELECT 
+    p.name, SUM(od.quantity) AS quantity
+FROM
+    products AS p
+        JOIN
+    order_details AS od ON p.product_id = od.product_id
+GROUP BY p.name
 """
 
 # Executing the SQL query
 cursor.execute(query)
 
-# Fetching the result
-result = cursor.fetchone()
+# Fetching all results
+results = cursor.fetchall()
 
 # Closing the cursor and connection
 cursor.close()
 conn.close()
 
-# Printing the result
-if result:
-    print(f'Total Profit: {result[0]}')
+# Printing the results
+if results:
+    for row in results:
+        print(f'Product: {row[0]}, Quantity Sold: {row[1]}')
 else:
     print('No data found.')
