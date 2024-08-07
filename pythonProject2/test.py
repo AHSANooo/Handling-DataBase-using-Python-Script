@@ -1,12 +1,17 @@
 import mysql.connector
 
-# Creating a connection object
-conn_obj = mysql.connector.connect(host="localhost", user="root", passwd="687354@@", database='kfc_management')
+# Establishing the connection to the MySQL database
+conn = mysql.connector.connect(
+    host='localhost',      # e.g., 'localhost'
+    user='root',  # e.g., 'root'
+    password='687354@@',
+    database='kfc_management'  # e.g., 'kfc_management_system'
+)
 
-# printing the connection object
-print(conn_obj)
-cursor = conn_obj.cursor()
+# Creating a cursor object using the connection
+cursor = conn.cursor()
 
+# Defining the SQL query to calculate the total profit
 query = """
 SELECT SUM((od.price - p.cost) * od.quantity) AS profit
 FROM order_details od
